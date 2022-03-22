@@ -21,7 +21,7 @@ public class AiManager : BaseManager
         _playerManager = GetComponent<PlayerManager>();
         if (_playerManager == null)
         {
-            Debug.LogError("PlayerManager not found");
+            Debug.LogError("No PlayerManager");
         }
     }
     public override void TakeTurn()

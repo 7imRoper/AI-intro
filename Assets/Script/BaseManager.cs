@@ -13,7 +13,13 @@ public abstract class BaseManager : MonoBehaviour
     {
         UpdateHealthText();
     }
-
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
+    }
     public abstract void TakeTurn();
     protected abstract void EndTurn();
 
