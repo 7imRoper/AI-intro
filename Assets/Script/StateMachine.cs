@@ -6,17 +6,16 @@ using UnityEngine.VFX;
 
 public class StateMachine : MonoBehaviour
 {
-    //comma separated list of identifiers
+
     public enum State
     {
         Attack,
         Defence,
         RunAway,
-        BerryPicking
+        Pattrol
     }
 
     public State currentState;
-
     public AIMovement aiMovement;
 
     private void Start()
@@ -39,8 +38,8 @@ public class StateMachine : MonoBehaviour
             case State.RunAway:
                 StartCoroutine(RunAwayState());
                 break;
-            case State.BerryPicking:
-                StartCoroutine(BerryPickingState());
+            case State.Pattrol:
+                StartCoroutine(Pattrol());
                 break;
         }
     }
@@ -52,7 +51,7 @@ public class StateMachine : MonoBehaviour
             aiMovement.AIMoveTowards(aiMovement.player);
             if (!aiMovement.IsPlayerInRange())
             {
-                currentState = State.BerryPicking;
+                currentState = State.Pattrol;
             }
 
             yield return null;
@@ -69,10 +68,10 @@ public class StateMachine : MonoBehaviour
         while (currentState == State.Defence)
         {
 
-
+            //spawns next waypoint
             if (timeOfLastSpawn + 3f < Time.time)
             {
-                //spawn new waypoint
+               
                 timeOfLastSpawn = Time.time;
             }
 
@@ -95,17 +94,17 @@ public class StateMachine : MonoBehaviour
         NextState();
     }
 
-    private IEnumerator BerryPickingState()
+    private IEnumerator Pattrol()
     {
        
 
         aiMovement.FindClosestWaypoint();
 
-        while (currentState == State.BerryPicking)
+        while (currentState == State.Pattrol)
         {
             aiMovement.WaypointUpdate();
             aiMovement.AIMoveTowards(aiMovement.position[aiMovement.positionIndex].transform);
-            if (aiMovement.IsPlayerInRange())//what goes in here?
+            if (aiMovement.IsPlayerInRange())
             {
                 currentState = State.Attack;
             }

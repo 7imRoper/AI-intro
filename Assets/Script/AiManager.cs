@@ -12,6 +12,7 @@ public class AiManager : BaseManager
         Dead,
     }
 
+
     public State currentState;
     protected PlayerManager _playerManager;
     protected override void Start()
@@ -28,6 +29,7 @@ public class AiManager : BaseManager
         if (_health <= 0f)
         {
             currentState = State.Dead;
+            DeadState();
         }
         switch (currentState)
         {
@@ -81,12 +83,7 @@ public class AiManager : BaseManager
             LowHPState();
             return;
         }
-        //random.range for ints
-        //min number ==  inclusive
-        //max number == exclusive
-        //20% chance to use splash
-        //70% chance to use iron tail
-        //10% chance to use self destruct
+       
         int randomAttack = Random.Range(0, 10);
         switch (randomAttack)
         {
@@ -103,31 +100,32 @@ public class AiManager : BaseManager
     }
     void DeadState()
     {
-        Debug.Log("AI IS DEAD YOU WIN");
+        Time.timeScale = 1;
+
     }
     public void Shoot()
     {
-        Debug.Log("Ai Shoots");
         _playerManager.DealDamage(10f);
-        EndTurn();
+        _playerManager.TakeTurn();
     }
     public void Bomb()
     {
         Debug.Log("Ai drops Bomb");
         _playerManager.DealDamage(20f);
-        EndTurn();
+        _playerManager.TakeTurn();
     }
     public void Rest()
     {
         Debug.Log("Ai Rests");
         Heal(10f);
-        EndTurn();
+        _playerManager.TakeTurn();
     }
     public void SelfDestruct()
     {
         Debug.Log("Ai casts Self Destruct");
+        
         DealDamage(_maxHealth);
         _playerManager.DealDamage(80f);
-        EndTurn();
+        _playerManager.TakeTurn();
     }
 }

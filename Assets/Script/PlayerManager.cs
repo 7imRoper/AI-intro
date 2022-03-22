@@ -27,6 +27,7 @@ public class PlayerManager : BaseManager
     public override void TakeTurn()
     {
         _buttonGroup.interactable = true;
+        Debug.Log("player turn");
     }
 
     protected override void EndTurn()
